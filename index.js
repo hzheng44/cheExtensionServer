@@ -1,4 +1,4 @@
-var nodeServ = require('./src/server.js')
+var NodeServ = require('./src/server.js');
 
-var server = new nodeServ();
-server.listen()
+var server = new NodeServ();
+server.listen();

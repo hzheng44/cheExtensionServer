@@ -1,34 +1,35 @@
 var assert = require('assert');
 var nodeServer = require('../src/server.js');
-var io = require('socket.io-client')
+var io = require('socket.io-client');
 var config = require('../config/config.js');
 
-describe('hooks', () => {
+
+
+const url = `http://${config.app.host}:${config.app.port}`;
+describe('/', () => {
+    var server;
     before(() => {
-        //var server = new nodeServer();
-        //server.listen();
+        server = new nodeServer();
+        server.listen();
     });
 
     after(() => {
-        //server.close();
+        server.close();
     });
-})
 
-describe('/', () => {
     it('should see message echoed across clients', (done) => {
-        var socket1 = io.connect(`http://${config.app.host}:${config.app.port}`);
-        var socket2 = io.connect(`http://${config.app.host}:${config.app.port}`);
+        var socket1 = io.connect(url);
+        var socket2 = io.connect(url);
 
-        var testMsg = 'test'
-        var out;
-        socket1.emit('update', 'test');
+        var testMsg = 'test';
         socket2.on('update', (msg) => {
-            assert.equal(msg, testMsg)
-            out = msg;
+            assert.equal(msg, testMsg);
+            socket1.close();
+            socket2.close();
+            done();
         });
 
-        assert.equal('test', out)
-        done();
+        socket1.emit('update', testMsg);
     });
 });
 

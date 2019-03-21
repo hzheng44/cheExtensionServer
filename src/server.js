@@ -16,22 +16,21 @@ class Server {
         });
         this.io = serverIo(this.server);
         this.sockMap= {};
-        this.sockArr = []
+        this.sockArr = [];
     }
 
     listen() {
         this.io.on('connection', (socket) => {
             console.log(socket.id, ' connected');
 
-            this.sockMap[socket.id] = socket
-            this.sockArr.push(socket)
+            this.sockMap[socket.id] = socket;
+            this.sockArr.push(socket);
 
             socket.on('update', (msg) => {
                 var i;
                 console.log('update ', msg);
                 for (i = 0; i < this.sockArr.length; i++) {
                     if (this.sockArr[i].id != socket.id) {
-                        console.log('sending to ', this.sockArr[i].id);
                         this.sockArr[i].emit('update', msg);
                     }
                 }
@@ -39,11 +38,11 @@ class Server {
 
             socket.on('disconnect', () => {
                 var index = this.sockArr.indexOf(
-                    this.sockMap[socket.id])
+                    this.sockMap[socket.id]);
                 if (index > -1) {
-                    this.sockArr.splice(index, 1)
+                    this.sockArr.splice(index, 1);
                 }
-                delete this.sockMap[socket.id]
+                delete this.sockMap[socket.id];
             });
         });
 
@@ -54,6 +53,7 @@ class Server {
 
     close() {
         this.server.close();
+        console.log("closing server...");
     }
 }
 
