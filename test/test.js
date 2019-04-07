@@ -28,6 +28,9 @@ describe('/', () => {
             done();
         });
 
+        var key = "room";
+        socket1.emit('session', key);
+        socket2.emit('session', key);
         socket1.emit('update', testMsg);
     });
     it('should be able to handle simultaneous connections', (done) => {
@@ -49,13 +52,19 @@ describe('/', () => {
         });
         socket4.on('update', (msg) => {
             spy();
-            assert.equal(msg, testMsg);
+            assert.equal(msg, testMsg2);
             socket3.close();
             socket4.close();
             sinon.assert.calledTwice(spy);
             done();
         });
 
+        var key = "room";
+        var key2 = "room2";
+        socket1.emit('session', key);
+        socket2.emit('session', key);
+        socket3.emit('session', key2);
+        socket4.emit('session', key2);
         socket1.emit('update', testMsg);
     });
 });

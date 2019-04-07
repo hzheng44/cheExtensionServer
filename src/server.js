@@ -16,32 +16,26 @@ class Server {
         });
         this.io = serverIo(this.server);
         this.sockMap= {};
-        this.sockArr = [];
     }
 
     listen() {
         this.io.on('connection', (socket) => {
-            console.log(socket.id, ' connected');
-
             this.sockMap[socket.id] = socket;
-            this.sockArr.push(socket);
+
+            // Session events are used to join a connection.
+            // The session key is mapped in a map to socket.id
+            socket.on('session', (key) => {
+                socket.join(`${key}`);
+                this.sockMap[socket.id] = key;
+            });
 
             socket.on('update', (msg) => {
-                var i;
-                console.log('update ', msg);
-                for (i = 0; i < this.sockArr.length; i++) {
-                    if (this.sockArr[i].id != socket.id) {
-                        this.sockArr[i].emit('update', msg);
-                    }
-                }
+                var key = this.sockMap[socket.id];
+                socket.broadcast.to(`${key}`).emit('update', msg);
             });
 
             socket.on('disconnect', () => {
-                var index = this.sockArr.indexOf(
-                    this.sockMap[socket.id]);
-                if (index > -1) {
-                    this.sockArr.splice(index, 1);
-                }
+                socket.leave(`${this.sockMap[socket.id]}`);
                 delete this.sockMap[socket.id];
             });
         });
