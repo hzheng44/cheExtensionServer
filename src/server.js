@@ -11,8 +11,8 @@ class Server {
                 'utf-8', function(error, content) {
                     const headers = {
                         "Access-Control-Allow-Headers": "Content-Type, Authorization",
-                        "Access-Control-Allow-Origin": "*",
                         "Access-Control-Allow-Credentials": true,
+                        "Access-Control-Allow-Origin": "*",
                         "Content-Type": "text/html"
                     };
                     res.writeHead(200, headers);
