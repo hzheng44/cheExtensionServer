@@ -33,6 +33,7 @@ describe('/', () => {
         socket2.emit('session', key);
         socket1.emit('update', testMsg);
     });
+
     it('should be able to handle simultaneous connections', (done) => {
         var socket1 = io.connect(url);
         var socket2 = io.connect(url);

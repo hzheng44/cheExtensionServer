@@ -15,6 +15,7 @@ class Server {
                 });
         });
         this.io = serverIo(this.server);
+        this.io.origins('*:*');
         this.sockMap= {};
     }
 
