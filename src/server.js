@@ -9,8 +9,13 @@ class Server {
             function(req, res) {
             fs.readFile('./pageindex.html', 
                 'utf-8', function(error, content) {
-                    res.writeHead(200, 
-                        {"Content-Type": "text/html"});
+                    const headers = {
+                        "Access-Control-Allow-Headers": "Content-Type, Authorization",
+                        "Access-Control-Allow-Origin": req.headers.origin //or the specific origin you want to give access to,
+                        "Access-Control-Allow-Credentials": true,
+                        "Content-Type": "text/html"
+                    };
+                            res.writeHead(200, headers);
                     res.end(content);
                 });
         });
