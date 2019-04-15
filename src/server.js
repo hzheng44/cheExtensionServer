@@ -9,13 +9,11 @@ class Server {
             function(req, res) {
             fs.readFile('./pageindex.html', 
                 'utf-8', function(error, content) {
-                    const headers = {
-                        "Access-Control-Allow-Headers": "Content-Type, Authorization",
-                        "Access-Control-Allow-Credentials": true,
-                        "Access-Control-Allow-Origin": "*",
-                        "Content-Type": "text/html"
-                    };
-                    res.writeHead(200, headers);
+                    res.setHeader("Content-Type", "text/html")
+                    res.setHeader("Access-Control-Allow-Credentials", true)
+                    res.setHeader("Access-Control-Allow-Origin", "*");
+                    res.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+                    res.statusCode = 200;
                     res.end(content);
                 });
         });
