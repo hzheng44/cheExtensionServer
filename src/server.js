@@ -17,7 +17,7 @@ class Server {
                     res.end(content);
                 });
         });
-        this.io = serverIo(this.server, { origins: '*:*' });
+        this.io = serverIo(this.server, { origin: '*:*', transport:['websocket']});
         this.sockMap= {};
     }
 
