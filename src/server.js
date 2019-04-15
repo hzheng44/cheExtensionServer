@@ -14,8 +14,7 @@ class Server {
                     res.end(content);
                 });
         });
-        this.io = serverIo(this.server);
-        this.io.origins('*:*');
+        this.io = serverIo(this.server, { origins: '*:*' });
         this.sockMap= {};
     }
 
@@ -26,11 +25,13 @@ class Server {
             // Session events are used to join a connection.
             // The session key is mapped in a map to socket.id
             socket.on('session', (key) => {
+                console.log(key);
                 socket.join(`${key}`);
                 this.sockMap[socket.id] = key;
             });
 
             socket.on('update', (msg) => {
+                console.log(msg);
                 var key = this.sockMap[socket.id];
                 socket.broadcast.to(`${key}`).emit('update', msg);
             });
