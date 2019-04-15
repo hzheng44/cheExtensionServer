@@ -11,7 +11,7 @@ class Server {
                 'utf-8', function(error, content) {
                     const headers = {
                         "Access-Control-Allow-Headers": "Content-Type, Authorization",
-                        "Access-Control-Allow-Origin": req.headers.origin,
+                        "Access-Control-Allow-Origin": "*",
                         "Access-Control-Allow-Credentials": true,
                         "Content-Type": "text/html"
                     };
