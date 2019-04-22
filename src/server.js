@@ -7,11 +7,11 @@ class Server {
     constructor() {
         this.server = http.createServer(
             function(req, res) {
-            fs.readFile('./pageindex.html', 
+            fs.readFile('./pageindex.html',
                 'utf-8', function(error, content) {
                     const headers = {
                         "Access-Control-Allow-Headers": "Content-Type, Authorization",
-                        "Access-Control-Allow-Origin": req.headers.origin //or the specific origin you want to give access to,
+                        "Access-Control-Allow-Origin": req.headers.origin, //or the specific origin you want to give access to,
                         "Access-Control-Allow-Credentials": true,
                         "Content-Type": "text/html"
                     };
@@ -39,6 +39,12 @@ class Server {
                 console.log(msg);
                 var key = this.sockMap[socket.id];
                 socket.broadcast.to(`${key}`).emit('update', msg);
+            });
+
+            socket.on('open', (msg) => {
+                console.log(msg);
+                var key = this.sockMap[socket.id];
+                socket.broadcast.to(`${key}`).emit('open', msg);
             });
 
             socket.on('disconnect', () => {
