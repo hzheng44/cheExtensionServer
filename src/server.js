@@ -9,6 +9,10 @@ var config = require('../config/config');
 
 
 app.use(cors());
+app.get('/healthcheck', (req, res) => {
+    res.send('ok')
+});
+
 var server = require('http').Server(app);
 
 class Server {
