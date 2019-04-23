@@ -58,7 +58,8 @@ class Server {
             });
         });
 
-        this.server.listen(config.app.port, function(){
+        // process.env.PORT used by heroku
+        this.server.listen( (process.env.PORT || config.app.port), function(){
             console.log(`listening on ${config.app.host}:${config.app.port}`);
         });
     }
